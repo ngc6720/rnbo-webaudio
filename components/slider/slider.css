@@ -1,0 +1,78 @@
+@import '../../style.css';
+
+.slider {
+
+  --color-slider: var(--color-surface);
+  --color-label: var(--color-text);
+  --color-handle: var(--color-text);
+  --color-line:  var(--color-text);
+  
+  --color-handle-disabled: var(--color-disabled);
+  --color-line-disabled:  var(--color-disabled);
+  
+  font-size: 0.8rem;
+  color: var(--color-label);
+  font-weight: 500;
+  display: flex;
+  position: relative;
+}
+
+.slider.disabled {
+  --color-line:  var(--color-line-disabled);
+  --color-handle: var(--color-handle-disabled);
+}
+
+input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  height: 0;
+  margin: 0;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  border: 1px solid transparent;
+  background: var(--color-slider);
+  transition: border-color 0.25s;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: var(--color-surface);
+  width: 0.75rem;
+  height: 1rem;
+  border-radius: 4px;
+  border: 3px solid var(--color-handle);
+  pointer-events: all;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 0.75rem;
+  height: 1rem;
+  border-radius: 4px;
+  border:none;
+  pointer-events: all;
+}
+
+input[type="range"] ~ label {
+  color: var(--color-label);
+  font-weight: 500;
+  position: absolute;
+  top: -1.2rem;
+  left: 0;
+}
+
+input[type="range"]:not([disabled]):active {
+  outline: 1px auto var(--color-outline);
+}
+
+@media (hover) {
+  input[type="range"]:not([disabled]):hover {
+    border-color: var(--color-accent);
+    
+  }
+  input[type="range"]:disabled:hover {
+    cursor: default;
+  }
+}

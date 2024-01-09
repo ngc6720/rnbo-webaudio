@@ -1,0 +1,55 @@
+@import '../../style.css';
+
+.pad {
+
+  --color-pad: var(--color-surface);
+  --color-handle: var(--color-text);
+  
+  --color-handle-disabled: var(--color-disabled);
+
+  --handleSize: 3rem;
+  --posX: 0.5;
+  --posY: 0.5;
+  --rotationY: 0;
+  --rotationX: 0;
+
+  display: flex;
+  position: relative;
+  border-radius: 8px;
+  padding: calc(var(--handleSize)/2) calc(var(--handleSize)/2);
+  cursor: pointer;
+  background-color: var(--color-pad);
+  border: 1px solid transparent;
+}
+
+.pad.disabled {
+    --color-handle: var(--color-handle-disabled);
+    pointer-events: none;
+  }
+
+.plane {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+}
+
+.handle {
+    position: absolute;
+    width: var(--handleSize);
+    height: var(--handleSize);
+    border-radius: 50%;
+    border: 3px solid var(--color-handle);
+
+    left: calc(var(--posX) * 100% - var(--handleSize)/2 );
+    top: calc(var(--posY) * 100% - var(--handleSize)/2);
+}
+
+.pad.active .handle {
+    background-color: var(--color-handle);
+    cursor: none;
+}
+
+.pad.active {
+    transform: perspective(90rem) rotateY(var(--rotationY)) rotateX(var(--rotationX));
+    border: 1px solid var(--color-handle);
+}
