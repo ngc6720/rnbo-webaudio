@@ -1,13 +1,14 @@
 class Dragger {
 
   #el;
+  #previousTouch;
 
   constructor(el, startEl = el) {
     this.#el = el;
     
     this.down = loc => {};
     this.drag = loc => {};
-    this.up = () => {};
+    this.up = loc => {};
 
     startEl.ontouchstart = (e) => (this.#handleEvents(e), e.preventDefault());
     startEl.onmousedown = (e) => (this.#handleEvents(e), e.preventDefault());
@@ -41,12 +42,19 @@ class Dragger {
     rect = this.#el.getBoundingClientRect();
     width = rect.right - rect.left;
     height = rect.bottom - rect.top;
-    mX = e.movementX;
-    mY = e.movementY;
+    mX = e.movementX ?? 0;
+    mY = e.movementY ?? 0;
     
     if (type === "touchstart" || type === "touchmove") {
       x = e.touches[0].clientX - rect.left;
       y = e.touches[0].clientY - rect.top;
+    }
+    if (type === "touchmove") {
+      if (this.#previousTouch) {
+        mX = x - this.#previousTouch[0];
+        mY = y - this.#previousTouch[1];
+      }
+      this.#previousTouch = [x, y];
     }
     if (type === "touchend") {
       x = e.changedTouches[0].clientX - rect.left;
@@ -57,6 +65,12 @@ class Dragger {
       y = e.clientY - rect.top;
     }
     
+    if (type === "touchend" || type === "mouseup") {
+      mX = 0;
+      mY = 0;
+      this.#previousTouch = null;
+    }
+
     x > width && (x = width);
     x < 0 && (x = 0);
     y > height && (y = height);

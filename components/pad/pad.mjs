@@ -40,6 +40,7 @@ class Pad extends HTMLElement {
         this.#drag.down = loc => {
             this.#listeners['x'].forEach(listener => listener.cb(loc.normX))
             this.#listeners['y'].forEach(listener => listener.cb(1 - (loc.normY)))
+            this.#listeners['mov'].forEach(listener => listener.cb(Math.min(1, Math.max(0, (Math.abs(loc.mX) + Math.abs(loc.mX)) * 0.5 * 0.01))))
             this.#listeners['down'].forEach(listener => listener.cb())
             this.#el.classList.add('active')
             this.#renderEl(loc.normX, loc.normY);
@@ -50,7 +51,8 @@ class Pad extends HTMLElement {
             this.#listeners['y'].forEach(listener => listener.cb(1 - (loc.normY)))
             this.#renderEl(loc.normX, loc.normY)
         }
-        this.#drag.up = () => {
+        this.#drag.up = loc => {
+            this.#listeners['mov'].forEach(listener => listener.cb(Math.min(1, Math.max(0, (Math.abs(loc.mX) + Math.abs(loc.mX)) * 0.5 * 0.01))))
             this.#listeners['up'].forEach(listener => listener.cb())
             this.#el.classList.remove('active')
         }
